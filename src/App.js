@@ -1,7 +1,7 @@
 import "./App.css";
 import { ethers } from "ethers";
 import Uploadabi from "./Abi.json";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 function App() {
   const [account, setAccount] = useState("");
@@ -110,7 +110,7 @@ function App() {
                 data-primary="blue-600"
                 onChange={(e) => setaddress(e.target.value)}
                 data-rounded="rounded-lg"
-                placeholder="Address..."
+                placeholder="Paste above address .."
                
               />
       {address ? 
@@ -119,7 +119,7 @@ function App() {
       <button className="bg-green-100 p-2 ml-10 text-base font-semibold rounded-lg" disabled >Get Balance</button>
 
     }
-      {balance ? <p className="text-sm font-semibold mt-3" >Your balance is : {balance} STC</p> : ""}
+      {balance >=0 ? <p className="text-sm font-semibold mt-3" >Your balance is : {balance} STC</p> : ""}
      <br />
       <label className="font-bold text-lg">
       Mint Tokens : 
