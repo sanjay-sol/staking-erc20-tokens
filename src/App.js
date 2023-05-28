@@ -97,7 +97,7 @@ function App() {
       </>
       ) : (
         <>
-      <button className="bg-teal-600 rounded-lg p-2 mt-5 text-lg font-extrabold" onClick={() => connectW()}> Connect Wallet  </button><span className="text-sm text-red-600 font-bold">(Click again if you don't see your address)</span>
+      <button className="bg-teal-600 rounded-lg p-2 mt-5 text-lg font-extrabold" onClick={() => connectW()}> Connect Wallet  </button><span className="text-sm text-red-600 font-bold">(Unlock your Metamask or Click again if you don't see your address)</span>
       </>
       )}
       <br />
