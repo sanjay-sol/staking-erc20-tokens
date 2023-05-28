@@ -5,7 +5,7 @@ import { ethers } from "ethers";
 // const {ethers} = require("ethers");
 import Uploadabi from "./Abi.json";
 import { useState, useEffect } from "react";
-import { ConstructorFragment } from "ethers/lib/utils";
+// import { ConstructorFragment } from "ethers/lib/utils";
 
 function App() {
   const [account, setAccount] = useState("");
@@ -35,7 +35,7 @@ function App() {
         const address = await signer.getAddress();
         setAccount(address);
 
-        let contractAddress = "0xfA8AB8e997B9fe3A65669243565fbde5B550041a";
+        let contractAddress = "0x6B14F47e04a18bdD289BedD2133dAE1562ffA50E";
 
         const contract = new ethers.Contract(
           contractAddress,
@@ -52,49 +52,141 @@ function App() {
     provider && loadProvider();
   }
   const getBalance = async (addressval) => {
-    const bal = await contract.balanceOf(addressval);
+    try {
+      const bal = await contract.balanceOf(addressval);
     setbalance(bal.toNumber());
+    } catch (error) {
+      alert(error.message);
+      
+    }
+    
   };
   const stakeTokens = async (amount) => {
+    try {
     await contract.stake(amount);
+      
+    } catch (error) {
+      alert(error.message);
+      
+    }
   };
   const claimAwards = async () => {
+    try {
     await contract.claim();
+      
+    } catch (error) {
+      alert(error.message);
+      
+    }
   };
   const unstakeTokens = async (amount1) => {
     try {
       const a = await contract.unstake(amount1);
       console.log(a);
     } catch (error) {
-      console.log(error.message);
+      alert(error.message);
     }
   };
 
-  console.log(address);
-  console.log(balance);
+  // console.log(address);
+  // console.log(balance);
 
   return (
-    <div className="App">
+    <>
+    <div className="App flex flex-col justify-center items-center">
+      <div className="bg-gray-200 w-8/12 rounded-lg pb-3  " >
+
       {!account ? (
-        <button onClick={() => connectW()}> Connect Wallet</button>
+      <button className="bg-teal-600 rounded-lg p-2 mt-5 text-lg font-extrabold" onClick={() => connectW()}> Connect Wallet</button>
+
+
       ) : (
-        <p>Account : {account}</p>
+        <p className="font-extrabold text-lg mt-4">Account : {account}</p>
       )}
-      <label htmlFor="Address">Check Balance</label>
-      <input type="text" onChange={(e) => setaddress(e.target.value)} />
-      <button onClick={() => getBalance(address)}>Submit</button>
-      {balance ? <p>Your balance is : {balance}</p> : ""}
       <br />
-      <label htmlFor="stake">Enter amount to stake</label>
-      <input type="number" onChange={(e) => setamount(e.target.value)} />
-      <button onClick={() => stakeTokens(amount)}>Stake</button>
+      <label className="font-bold text-lg">
+      Check Balance : 
+              </label>
+              <input
+                type="text"
+                className="ml-5 w-48 p-2 mt-2 text-xl placeholder-gray-400 border-gray-500 border-2 bg-gray-300 rounded-lg focus:outline-none "
+                data-primary="blue-600"
+                onChange={(e) => setaddress(e.target.value)}
+                data-rounded="rounded-lg"
+                placeholder="Address..."
+               
+              />
+      
+      {/* <input type="text" onChange={(e) => setaddress(e.target.value)} /> */}
+      {address ? 
+      <button className="bg-green-300 p-2 ml-10 text-base font-bold rounded-lg" onClick={() => getBalance(address)}>Get Balance</button>
+      :
+      <button className="bg-green-100 p-2 ml-10 text-base font-semibold rounded-lg" disabled >Get Balance</button>
+
+    }
+      {balance ? <p className="text-sm font-semibold mt-3" >Your balance is : {balance} ETH</p> : ""}
+      </div>
       <br />
-      <button onClick={() => claimAwards()}>claim</button>
+      <div className="bg-gray-200 w-8/12 rounded-lg pb-3 p-3 ">
+      <h1 className="font-extrabold text-2xl text-emerald-900 underline" >Stake , Unstake and Claim Rewards</h1>
+      <label className="font-bold text-lg">
+      Enter amount to stake : 
+              </label>
+              <input
+                type="number"
+                className="ml-5 w-48 p-2 mt-2 text-xl placeholder-gray-500 border-gray-500 border-2 bg-gray-300 rounded-lg focus:outline-none "
+                data-primary="blue-600"
+                onChange={(e) => setamount(e.target.value)}
+                data-rounded="rounded-lg"
+                placeholder="Amount > 100"
+               
+              />
+      {/* <input type="number" onChange={(e) => setamount(e.target.value)} /> */}
+      {amount>100 ? 
+      <button className="bg-yellow-300 p-2 ml-10 text-base font-bold rounded-lg" onClick={() => stakeTokens(amount)}>Stake</button>
+      :
+      <button className="bg-yellow-100 p-2 ml-10 text-base font-semibold rounded-lg" disabled >Stake</button>
+
+    }
+      {/* <button onClick={() => stakeTokens(amount)}>Stake</button> */}
       <br />
-      <input type="number" onChange={(e) => setamount1(e.target.value)} />
-      <button onClick={() => unstakeTokens(amount1)}>UnStake</button>
+      <label className="font-bold text-lg">
+       
+      Claim Rewards till now ( wait for few seconds after staking ): 
+              </label>
+              {amount ? 
+      <button className="bg-sky-300 p-2 ml-2 text-base font-bold rounded-lg mt-4" onClick={() => claimAwards()}>Claim</button>
+        :
+      <button className="bg-sky-200 p-2 ml-2 text-base font-semibold rounded-lg mt-4" disabled >Claim</button>
+
+      }
+
+      {/* <button onClick={() => claimAwards()}>claim</button> */}
       <br />
+      <label className="font-bold text-lg">
+     Unstake your Tokens : 
+              </label>
+              <input
+                type="number"
+                className="ml-5 w-52 p-2 mt-2 text-xl placeholder-gray-500 border-gray-500 border-2 bg-gray-300 rounded-lg focus:outline-none "
+                data-primary="blue-600"
+                onChange={(e) => setamount1(e.target.value)}
+                data-rounded="rounded-lg"
+                placeholder="Amount <= staked amount"
+               
+              />
+      {/* <input type="number" onChange={(e) => setamount1(e.target.value)} /> */}
+      {amount1 ? 
+      <button className="bg-red-300 p-2 ml-2 text-base font-bold rounded-lg mt-4" onClick={() => unstakeTokens(amount1)}>Unstake</button>
+      :
+      <button className="bg-red-200 p-2 ml-2 text-base font-semibold rounded-lg mt-4" disabled>Unstake</button>
+
+    }
+      {/* <button onClick={() => unstakeTokens(amount1)}>UnStake</button> */}
+      <br />
+      </div>
     </div>
+    </>
   );
 }
 
