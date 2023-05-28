@@ -8,7 +8,7 @@ Process to how to Mint , Stake , Unstake the tokens and claim rewards based on s
 ## Step 1 : Install Metamask and Click on Connect Wallet ( Have some Goerli ETH or any other testnet crypto currency )
 
 ## Step 2 : Check your initial balance by  providing your wallet address . 
-<img width="1432" alt="initial balance" src="https://github.com/sanjay-sol/staking-erc20-tokens/assets/114111046/838df7f9-b000-41a7-a5af-f621605b80fb">
+<img width="1432" alt="initial balance" src="https://drive.google.com/file/d/1NpG64jFmefB5po6h-kR8jeDuNTAF4yuP/view?usp=sharing">
 
 ## Step 3: Mint tokens 
 <img width="1433" alt="minting tokens" src="https://github.com/sanjay-sol/staking-erc20-tokens/assets/114111046/59773bc6-3329-4322-90a1-50cf4bf01030">
