@@ -1,6 +1,7 @@
 # staking-erc20-tokens
 # Link to deployed frontend : https://stakingtokens.vercel.app/
 # Link to smart Contract Code : https://github.com/sanjay-sol/staking_smartcontract
+# Link to deployed smart Contract (Etherscan) : https://goerli.etherscan.io/address/0xFC01069a3278195eD0dd85545f50e1296dFE447e
 
 Process to how to Mint , Stake , Unstake the tokens and claim rewards based on staking time .
 
