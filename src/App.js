@@ -1,11 +1,7 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { ethers } from "ethers";
-// import * as ethers from "ethers";
-// const {ethers} = require("ethers");
 import Uploadabi from "./Abi.json";
 import { useState, useEffect } from "react";
-// import { ConstructorFragment } from "ethers/lib/utils";
 
 function App() {
   const [account, setAccount] = useState("");
@@ -16,10 +12,10 @@ function App() {
   const [balance, setbalance] = useState("");
   const [amount, setamount] = useState("");
   const [amount1, setamount1] = useState("");
+  const [mintamount, setmintamount] = useState("");
 
   function connectW() {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
-
     const loadProvider = async () => {
       if (provider) {
         window.ethereum.on("chainChanged", () => {
@@ -35,7 +31,7 @@ function App() {
         const address = await signer.getAddress();
         setAccount(address);
 
-        let contractAddress = "0x6B14F47e04a18bdD289BedD2133dAE1562ffA50E";
+        let contractAddress = "0xFC01069a3278195eD0dd85545f50e1296dFE447e";
 
         const contract = new ethers.Contract(
           contractAddress,
@@ -56,27 +52,21 @@ function App() {
       const bal = await contract.balanceOf(addressval);
     setbalance(bal.toNumber());
     } catch (error) {
-      alert(error.message);
-      
+      alert(error.message); 
     }
-    
   };
   const stakeTokens = async (amount) => {
     try {
-    await contract.stake(amount);
-      
+    await contract.stake(amount);  
     } catch (error) {
       alert(error.message);
-      
     }
   };
   const claimAwards = async () => {
     try {
-    await contract.claim();
-      
+    await contract.claim(); 
     } catch (error) {
       alert(error.message);
-      
     }
   };
   const unstakeTokens = async (amount1) => {
@@ -87,21 +77,28 @@ function App() {
       alert(error.message);
     }
   };
-
-  // console.log(address);
-  // console.log(balance);
-
+  const mintTokens = async(amount) => {
+    try {
+      await contract.mint(amount);
+    } catch (error) {
+      alert(error.message);
+      
+    }
+  }
   return (
     <>
     <div className="App flex flex-col justify-center items-center">
       <div className="bg-gray-200 w-8/12 rounded-lg pb-3  " >
 
-      {!account ? (
-      <button className="bg-teal-600 rounded-lg p-2 mt-5 text-lg font-extrabold" onClick={() => connectW()}> Connect Wallet</button>
-
-
-      ) : (
+      {signer ? (
+        <>
         <p className="font-extrabold text-lg mt-4">Account : {account}</p>
+
+      </>
+      ) : (
+        <>
+      <button className="bg-teal-600 rounded-lg p-2 mt-5 text-lg font-extrabold" onClick={() => connectW()}> Connect Wallet  </button><span className="text-sm text-red-600 font-bold">(Click again if you don't see your address)</span>
+      </>
       )}
       <br />
       <label className="font-bold text-lg">
@@ -116,8 +113,6 @@ function App() {
                 placeholder="Address..."
                
               />
-      
-      {/* <input type="text" onChange={(e) => setaddress(e.target.value)} /> */}
       {address ? 
       <button className="bg-green-300 p-2 ml-10 text-base font-bold rounded-lg" onClick={() => getBalance(address)}>Get Balance</button>
       :
@@ -125,6 +120,27 @@ function App() {
 
     }
       {balance ? <p className="text-sm font-semibold mt-3" >Your balance is : {balance} ETH</p> : ""}
+     <br />
+      <label className="font-bold text-lg">
+      Mint Tokens : 
+              </label>
+              <input
+                type="text"
+                className="ml-5 w-48 p-2 mt-2 text-xl placeholder-gray-400 border-gray-500 border-2 bg-gray-300 rounded-lg focus:outline-none "
+                data-primary="blue-600"
+                onChange={(e) => setmintamount(e.target.value)}
+                data-rounded="rounded-lg"
+                placeholder="Amount > 0"
+               
+              />
+              {mintamount ? 
+      <button className="bg-green-300 p-2 ml-10 text-base font-bold rounded-lg" onClick={() => mintTokens(mintamount)}>Mint </button>
+      :
+      <button className="bg-green-100 p-2 ml-10 text-base font-semibold rounded-lg" disabled >Mint</button>
+
+    }
+    <br />
+    <p className="text-sm text-red-600 font-bold">Check Balance to confirm your minted tokens</p>
       </div>
       <br />
       <div className="bg-gray-200 w-8/12 rounded-lg pb-3 p-3 ">
@@ -141,14 +157,12 @@ function App() {
                 placeholder="Amount > 100"
                
               />
-      {/* <input type="number" onChange={(e) => setamount(e.target.value)} /> */}
       {amount>100 ? 
       <button className="bg-yellow-300 p-2 ml-10 text-base font-bold rounded-lg" onClick={() => stakeTokens(amount)}>Stake</button>
       :
       <button className="bg-yellow-100 p-2 ml-10 text-base font-semibold rounded-lg" disabled >Stake</button>
 
     }
-      {/* <button onClick={() => stakeTokens(amount)}>Stake</button> */}
       <br />
       <label className="font-bold text-lg">
        
@@ -160,8 +174,8 @@ function App() {
       <button className="bg-sky-200 p-2 ml-2 text-base font-semibold rounded-lg mt-4" disabled >Claim</button>
 
       }
-
-      {/* <button onClick={() => claimAwards()}>claim</button> */}
+      <br />
+      <span className="text-sm text-red-600 font-bold">(Check Balance to see your rewarded tokens)</span>
       <br />
       <label className="font-bold text-lg">
      Unstake your Tokens : 
@@ -175,14 +189,12 @@ function App() {
                 placeholder="Amount <= staked amount"
                
               />
-      {/* <input type="number" onChange={(e) => setamount1(e.target.value)} /> */}
       {amount1 ? 
       <button className="bg-red-300 p-2 ml-2 text-base font-bold rounded-lg mt-4" onClick={() => unstakeTokens(amount1)}>Unstake</button>
       :
       <button className="bg-red-200 p-2 ml-2 text-base font-semibold rounded-lg mt-4" disabled>Unstake</button>
 
     }
-      {/* <button onClick={() => unstakeTokens(amount1)}>UnStake</button> */}
       <br />
       </div>
     </div>
